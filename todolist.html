@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="todo.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/5f59ca6ad3.js" crossorigin="anonymous"></script>
+
+ 
+</head>
+<body>
+  <div class="container bg-container m-auto ">
+     <div class="row row-box ">
+        <div class="col-12 text-center">
+            <h2 class="todo-head">Todos</h2>
+            <h2 class="check-task ml-3  ">Check Task</h2>
+
+            <input type="text" id="todouserInput" class="userInput ml-3 w-75 p-3" placeholder="What needs to be done?">
+             <div class="text-center p-4">
+              <button class="btn bg-primary button-box" id="addtodoButton">Add</button>
+             </div>
+             <h2 class="ml-1">My Tasks</h2>
+             <div class="ulclass ml-5">
+             <ul class=" todo-container text-center w-75 " id="mytodoContainer">
+       
+                <li class="d-flex flex-row todo-container text-center">
+             
+                </li>
+             </ul>
+
+              <button class="btn bg-primary" id="buttonsave">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+    let addtodoButton = document.getElementById("addtodoButton");
+
+     let todoList=[
+        {
+            text:"learn Html",
+            uniqueNo : 1
+        },
+
+        {
+            text:"Learn CSS",
+            uniqueNo : 2
+        },
+
+        {
+            text:"Learn java",
+            uniqueNo : 3
+        },
+
+        {
+            text:"Learn React Js",
+            uniqueNo : 4
+        }
+    ];
+    
+
+    let todosCount = todoList.legnth;
+
+     addtodoButton.onclick =function(){
+        onaddTodo();
+
+    }
+
+     function onTodoStatusChange(checkboxId,labelId){
+
+     let checkboxEl = document.getElementById(checkboxId);
+
+
+     let labelEl = document.getElementById(labelId);
+     
+     labelEl.classList.toggle("checked");
+    }
+  
+      function onDeleteTodo(todoId){
+       let todoEl = document.getElementById(todoId);
+        mytodoContainer.removeChild(todoEl);
+        }
+      
+      function createAndAppend(todo){
+        let checkboxId = "mycheckBox" +todo.uniqueNo;
+        let labelId  = "label" +todo.uniqueNo;
+        let todoId = "todo"  + todo.uniqueNo;
+
+   let mytodoContainer = document.getElementById("mytodoContainer");
+   let todoContainer = document.createElement('li');
+   todoContainer.id = todoId;
+   todoContainer.classList.add("d-flex","flex-row", "todo-container");
+   mytodoContainer.appendChild(todoContainer);
+
+   let inputElement = document.createElement('input');
+   inputElement.type = "checkbox";
+   inputElement.id = checkboxId;
+   inputElement.classList.add("check-box");
+   todoContainer.appendChild(inputElement);
+ 
+
+    inputElement.onclick = function(){
+        onTodoStatusChange(checkboxId, labelId);
+      }
+
+     let labelContainer = document.createElement('div');
+     labelContainer.classList.add("d-flex", "flex-row", "label-container");
+     todoContainer.appendChild(labelContainer);
+  
+     let labelElement = document.createElement('label');
+     labelElement.classList.add('label-box');
+     labelElement.textContent= todo.text;
+     labelElement.htmlFor= checkboxId;
+     labelElement.id= labelId;
+     labelContainer.appendChild(labelElement);
+
+
+     let deleteContainer = document.createElement("div");
+     deleteContainer.classList.add('delete-icon-container');
+     labelContainer.appendChild(deleteContainer);
+
+     let deleteIcon = document.createElement('i');
+     deleteIcon.classList.add("far", "fa-trash-alt",  "delete-icon");
+     deleteContainer.appendChild(deleteIcon);
+
+     deleteIcon.onclick = function(){
+        onDeleteTodo(todoId);
+      }
+     }
+
+
+     for (let eachtodo of todoList){
+        createAndAppend(eachtodo);
+     }
+
+    function onaddTodo(){
+        let useEle =document.getElementById("todouserInput");
+        let userValue = useEle.value;
+
+        todosCount = todosCount +1;
+
+        if(userValue ===""){
+            alert("Enter valid inputs");
+            return;
+        }
+
+        let newTodo = {
+            text : userValue,
+            uniqueNo : todosCount
+        };
+
+        createAndAppend(newTodo);
+        useEle.value = "";
+      }
+
+    </script>
+ </body>
+</html>
